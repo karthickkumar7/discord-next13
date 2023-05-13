@@ -68,7 +68,7 @@ const RegisterForm = () => {
                         placeholder="Enter your Name"
                         value={formData.username}
                         onChange={changeHandler}
-                        className="w-full px-2 md:px-4 py-2 md:py-3 outline-none rounded border border-slate-400 focus:border-sky-500 bg-slate-700"
+                        className="inp-dark"
                     />
                 </div>
                 <div className="mt-4 space-y-1">
@@ -85,7 +85,7 @@ const RegisterForm = () => {
                         placeholder="Enter your email address"
                         value={formData.email}
                         onChange={changeHandler}
-                        className="w-full px-2 md:px-4 py-2 md:py-3 outline-none rounded border border-slate-400 focus:border-sky-500 bg-slate-700"
+                        className="inp-dark"
                     />
                 </div>
                 <div className="mt-4 space-y-1">
@@ -114,7 +114,7 @@ const RegisterForm = () => {
                         placeholder="Enter your password"
                         value={formData.password}
                         onChange={changeHandler}
-                        className="w-full px-2 md:px-4 py-2 md:py-3 outline-none rounded border border-slate-400 focus:border-sky-500 bg-slate-700"
+                        className="inp-dark"
                     />
                 </div>
                 <div className="mt-4 space-y-1">
@@ -131,7 +131,7 @@ const RegisterForm = () => {
                         placeholder="Enter your password"
                         value={formData.confirm}
                         onChange={changeHandler}
-                        className="w-full px-2 md:px-4 py-2 md:py-3 outline-none rounded border border-slate-400 focus:border-sky-500 bg-slate-700"
+                        className="inp-dark"
                     />
                 </div>
                 <button
@@ -140,7 +140,7 @@ const RegisterForm = () => {
                     className={`w-full px-4 py-3 mt-8 rounded uppercase font-semibold duration-300 tracking-wider ${
                         disabled
                             ? 'bg-slate-800'
-                            : 'bg-indigo-600 hover:bg-indigo-700 active:brightness-110'
+                            : 'bg-burple hover:contrast-75 active:brightness-125'
                     }`}
                 >
                     register

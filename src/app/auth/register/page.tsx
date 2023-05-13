@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 const page = () => {
     return (
-        <div className="w-screen h-screen p-2 md:p-0 flex items-center justify-center bg-indigo-800">
-            <div className="w-full md:w-[800px] min-h-[500px] px-4 py-8 rounded bg-slate-700 text-slate-100">
+        <div className="w-screen h-screen p-2 md:p-0 flex items-center justify-center bg-burple">
+            <div className="w-full md:w-[800px] min-h-[500px] px-4 py-8 rounded bg-darkgray text-slate-100">
                 <div className="max-w-2xl mx-auto">
                     <h1 className="text-lg md:text-2xl font-semibold tracking-wider">
                         Register
@@ -15,10 +15,10 @@ const page = () => {
                 </div>
                 <RegisterForm />
                 <div className="max-w-2xl mx-auto mt-8">
-                    <p className="">
+                    <p className="capitalize">
                         already have an account?{' '}
                         <Link href={'/auth/login'}>
-                            <span className="hover:underline cursor-pointer text-indigo-400 hover:text-indigo-300">
+                            <span className="hover:underline cursor-pointer lowercase text-indigo-300">
                                 login
                             </span>
                         </Link>
