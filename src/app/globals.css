@@ -4,6 +4,6 @@
 
 @layer components {
     .inp-dark {
-        @apply w-full px-2 md:px-4 py-2 md:py-3 outline-none rounded border border-slate-400 focus:border-sky-500 bg-darkgray;
+        @apply w-full px-2 md:px-4 py-2 md:py-3 outline-none rounded border border-black focus:border-slate-400 bg-Gray;
     }
 }

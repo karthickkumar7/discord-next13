@@ -4,12 +4,8 @@ import { MdGroups2, MdOutlineAdd } from 'react-icons/md';
 const SideDashBar = () => {
     return (
         <section className="w-[3%] h-full px-2 py-4 bg-blackishGray flex flex-col items-center space-y-4">
-            <SidebarIcon>
-                <MdGroups2 />
-            </SidebarIcon>
-            <SidebarIcon>
-                <MdOutlineAdd />
-            </SidebarIcon>
+            <SidebarIcon Icon={MdGroups2} />
+            <SidebarIcon Icon={MdOutlineAdd} />
         </section>
     );
 };

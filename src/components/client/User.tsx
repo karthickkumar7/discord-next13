@@ -1,4 +1,4 @@
-import React from 'react';
+import { HiStatusOnline } from 'react-icons/hi';
 import UserAvatarName from './UserAvatarName';
 
 type Props = {
@@ -12,7 +12,7 @@ const User = ({ username, isActive }: Props) => {
             <UserAvatarName username={username} />
             {isActive && (
                 <section>
-                    <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                    <HiStatusOnline className="text-lg text-emerald-400" />
                 </section>
             )}
         </article>
