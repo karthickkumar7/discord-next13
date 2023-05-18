@@ -3,26 +3,51 @@ import toast from 'react-hot-toast';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import FormInput from './ui/FormInput';
 import { validateLoginForm } from '@/utils/formValidator';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
-import { login } from '@/redux/reducers/authSlice';
 import Spinner from './ui/Spinner';
 import { useRouter } from 'next/navigation';
+import { URL } from '@/config/urls';
 
 const LoginForm = () => {
     const [disabled, setDisabled] = useState(true);
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const { isLoading, isSuccess } = useSelector((s: RootState) => s.auth);
+    const [isLoading, setIsloading] = useState(false);
 
-    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    // login logic
+    const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        setIsloading(true);
         if (validateLoginForm(formData.email, formData.password)) {
-            // dispatch
-            dispatch(login(formData));
+            try {
+                const res = await fetch(`${URL}/auth/login`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: formData.email,
+                        password: formData.password,
+                    }),
+                    credentials: 'include',
+                    cache: 'no-store',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!res.ok) {
+                    const { error } = await res.json();
+                    toast.error(error);
+                    setIsloading(false);
+                    return;
+                }
+
+                setIsloading(false);
+                const { msg } = await res.json();
+                toast.success(msg);
+                router.push('/dashboard');
+            } catch (err) {
+                setIsloading(false);
+                toast.error('Something went wrong!');
+            }
         } else {
             toast.error('Invalid Form!');
         }
@@ -48,14 +73,6 @@ const LoginForm = () => {
             setDisabled(true);
         }
     }, [formData]);
-
-    // redirect to dashboard
-    useEffect(() => {
-        if (isSuccess) {
-            console.log('success');
-            router.push('/dashboard');
-        }
-    }, [isSuccess]);
 
     return (
         <form className="max-w-2xl mx-auto" onSubmit={submitHandler}>

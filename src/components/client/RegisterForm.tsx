@@ -1,45 +1,61 @@
 'use client';
 
-import { AppDispatch, RootState } from '@/redux/store';
 import { validateRegisterForm } from '@/utils/formValidator';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import FormInput from './ui/FormInput';
 import FormShowPasswordIcons from './ui/FormShowPasswordIcons';
-import toaster from 'react-hot-toast';
-import { register } from '@/redux/reducers/authSlice';
+import toast from 'react-hot-toast';
 import Spinner from './ui/Spinner';
 import { useRouter } from 'next/navigation';
 
 const RegisterForm = () => {
     const [disabled, setDisabled] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsloading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         username: '',
         password: '',
         confirm: '',
     });
-
-    const { isLoading, isSuccess } = useSelector((s: RootState) => s.auth);
-    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { username, email, password, confirm } = formData;
         if (validateRegisterForm(username, email, password, confirm)) {
-            // dispatch
-            dispatch(register({ username, email, password }));
-            setFormData({
-                username: '',
-                email: '',
-                password: '',
-                confirm: '',
-            });
-            setDisabled(true);
+            try {
+                const res = await fetch(`${URL}/auth/register`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email,
+                        username,
+                        password,
+                    }),
+                    credentials: 'include',
+                    cache: 'no-store',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!res.ok) {
+                    const { error } = await res.json();
+                    toast.error(error);
+                    setIsloading(false);
+                    return;
+                }
+
+                setIsloading(false);
+                const { msg } = await res.json();
+                toast.success(msg);
+                router.push('/dashboard');
+            } catch (err) {
+                setIsloading(false);
+                toast.error('Something went wrong!');
+            }
         } else {
-            toaster.error('Invalid Form!');
+            toast.error('Invalid Form!');
         }
     };
 
@@ -68,13 +84,6 @@ const RegisterForm = () => {
             setDisabled(true);
         }
     }, [formData]);
-
-    // redirect to dashboard
-    useEffect(() => {
-        if (isSuccess) {
-            router.push('/dashboard');
-        }
-    }, [isSuccess]);
 
     return (
         <>
