@@ -1,4 +1,4 @@
-import RegisterForm from '@/components/client/RegisterForm';
+import RegisterForm from '@/components/client/auth/RegisterForm';
 import Link from 'next/link';
 
 const page = () => {
@@ -17,7 +17,7 @@ const page = () => {
                 <div className="max-w-2xl mx-auto mt-8">
                     <p className="capitalize">
                         already have an account?{' '}
-                        <Link href={'/auth/login'}>
+                        <Link href={'/login'}>
                             <span className="hover:underline cursor-pointer lowercase text-sky-300">
                                 login
                             </span>

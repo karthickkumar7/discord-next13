@@ -1,7 +1,10 @@
 'use client';
 import { URL } from '@/config/urls';
+import { setUser } from '@/redux/reducers/authSlice';
+import { store } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 const TestUserComp = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -13,20 +16,28 @@ const TestUserComp = () => {
             try {
                 const res = await fetch(`${URL}/auth/validate`, {
                     cache: 'no-store',
-                    credentials: 'include',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            'token'
+                        )}`,
+                    },
                 });
 
                 if (!res.ok) {
+                    localStorage.removeItem('token');
                     router.push('/login');
                     return;
                 }
 
-                const user: User = await res.json();
+                const data = await res.json();
+                const user = { ...data, token: localStorage.getItem('token') };
+                store.dispatch(setUser(user));
                 setIsLoading(false);
                 setData(user);
             } catch (err) {
                 setIsLoading(false);
-                router.push('/login');
+                // router.push('/login');
+                toast.error('Something went wrong!');
                 console.log(err);
             }
         })();
@@ -39,7 +50,12 @@ const TestUserComp = () => {
             </div>
         );
 
-    return <div className="text-white">{data && JSON.stringify(data)}</div>;
+    return (
+        <div className="text-white">
+            {data && JSON.stringify(data.username)}
+            {data && JSON.stringify(data.email)}
+        </div>
+    );
 };
 
 export default TestUserComp;

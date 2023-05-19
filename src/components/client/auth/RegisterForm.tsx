@@ -2,11 +2,12 @@
 
 import { validateRegisterForm } from '@/utils/formValidator';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import FormInput from './ui/FormInput';
-import FormShowPasswordIcons from './ui/FormShowPasswordIcons';
+import FormInput from '../ui/FormInput';
+import FormShowPasswordIcons from '../ui/FormShowPasswordIcons';
 import toast from 'react-hot-toast';
-import Spinner from './ui/Spinner';
+import Spinner from '../ui/Spinner';
 import { useRouter } from 'next/navigation';
+import { URL } from '@/config/urls';
 
 const RegisterForm = () => {
     const [disabled, setDisabled] = useState(true);
@@ -32,7 +33,6 @@ const RegisterForm = () => {
                         username,
                         password,
                     }),
-                    credentials: 'include',
                     cache: 'no-store',
                     headers: {
                         'Content-Type': 'application/json',
@@ -45,9 +45,9 @@ const RegisterForm = () => {
                     setIsloading(false);
                     return;
                 }
-
+                const { msg, token } = await res.json();
+                localStorage.setItem('token', token);
                 setIsloading(false);
-                const { msg } = await res.json();
                 toast.success(msg);
                 router.push('/dashboard');
             } catch (err) {

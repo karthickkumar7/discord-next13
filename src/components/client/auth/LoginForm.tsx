@@ -1,9 +1,9 @@
 'use client';
 import toast from 'react-hot-toast';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import FormInput from './ui/FormInput';
+import FormInput from '../ui/FormInput';
 import { validateLoginForm } from '@/utils/formValidator';
-import Spinner from './ui/Spinner';
+import Spinner from '../ui/Spinner';
 import { useRouter } from 'next/navigation';
 import { URL } from '@/config/urls';
 
@@ -26,7 +26,6 @@ const LoginForm = () => {
                         email: formData.email,
                         password: formData.password,
                     }),
-                    credentials: 'include',
                     cache: 'no-store',
                     headers: {
                         'Content-Type': 'application/json',
@@ -41,7 +40,8 @@ const LoginForm = () => {
                 }
 
                 setIsloading(false);
-                const { msg } = await res.json();
+                const { msg, token } = await res.json();
+                localStorage.setItem('token', token);
                 toast.success(msg);
                 router.push('/dashboard');
             } catch (err) {
